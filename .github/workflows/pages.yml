@@ -28,11 +28,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p _site
-          base64 -d packaged/fashion-beach-mvp-dist.zip.b64 > /tmp/fashion-beach-mvp-dist.zip
+          cat packaged/fashion-beach-mvp-dist.zip.b64.part* > /tmp/fashion-beach-mvp-dist.zip.b64
+          base64 -d /tmp/fashion-beach-mvp-dist.zip.b64 > /tmp/fashion-beach-mvp-dist.zip
           unzip -o /tmp/fashion-beach-mvp-dist.zip -d _site
           touch _site/.nojekyll
           test -f _site/index.html
-          rm -f /tmp/fashion-beach-mvp-dist.zip
+          rm -f /tmp/fashion-beach-mvp-dist.zip /tmp/fashion-beach-mvp-dist.zip.b64
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
