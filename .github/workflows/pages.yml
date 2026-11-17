@@ -35,6 +35,18 @@ jobs:
           test -f _site/index.html
           rm -f /tmp/fashion-beach-mvp-dist.zip /tmp/fashion-beach-mvp-dist.zip.b64
 
+      - name: Decode and unpack the private test build (test-z30lyrb7)
+        run: |
+          set -euo pipefail
+          # unlisted test build at /fashion-beach/test-z30lyrb7/ ; the MVP 1 root above stays byte-identical
+          mkdir -p _site/test-z30lyrb7
+          cat packaged/test-z30lyrb7/fashion-beach-test-z30lyrb7.zip.b64.part* > /tmp/test-build.zip.b64
+          base64 -d /tmp/test-build.zip.b64 > /tmp/test-build.zip
+          unzip -o /tmp/test-build.zip -d _site/test-z30lyrb7
+          test -f _site/test-z30lyrb7/index.html
+          printf 'User-agent: *\nDisallow: /fashion-beach/test-z30lyrb7/\n' > _site/robots.txt
+          rm -f /tmp/test-build.zip /tmp/test-build.zip.b64
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
